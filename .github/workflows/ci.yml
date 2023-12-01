@@ -1,0 +1,23 @@
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is showing their holiday spirit!
+on: [push, pull_request]
+jobs:
+  test:
+    strategy:
+      matrix:
+        year: ["2023"]
+        day: ["01","02","03","04","05","06","07","08","09",
+              "10","11","12","13","14","15","16","17","18","19",
+              "20","21","22","23","24","25"]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.12.x
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: prepare
+        run: make prepare
+      - name: do testing
+        run: make run-and-test Y=${{matrix.year}} D=${{matrix.day}}
