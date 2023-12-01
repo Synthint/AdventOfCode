@@ -37,3 +37,9 @@ run-and-test: run test
 .PHONY: prepare
 prepare:
 	pip install pytest
+
+.PHONY: clean
+clean: 
+	find . -type d -name 'target' -prune -exec rm -rf {} \; && \
+	find . -type d -name '__pycache__' -prune -exec rm -rf {} \; && \
+	find . -type d -name '.pytest_cache' -prune -exec rm -rf {} \;
