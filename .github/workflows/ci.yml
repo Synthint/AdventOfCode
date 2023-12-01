@@ -5,7 +5,7 @@ jobs:
   test:
     strategy:
       matrix:
-        year: [2023]
+        year: ["2023"]
         day: ["01","02","03","04","05","06","07","08","09",
               "10","11","12","13","14","15","16","17","18","19",
               "20","21","22","23","24","25"]
@@ -19,4 +19,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: do testing
-        run: make run-and-test Y=${{year}} D=${{day}}
+        run: make run-and-test Y=${{matrix.year}} D=${{matrix.day}}
