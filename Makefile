@@ -1,7 +1,7 @@
 .PHONY: run
 run:
 	@cd $(Y)/Day_$(D) && \
-	VAR="`ls | grep "main" | head -1`" && \
+	VAR="`ls -R | grep "main" | head -1`" && \
 	if [ $$VAR = "main.py" ]; then \
 		echo "Detected Python For 12/$(D)/$(Y)"; \
 		echo "Running...\n"; \
@@ -17,7 +17,7 @@ run:
 .PHONY: test
 test:
 	@cd $(Y)/Day_$(D) && \
-	VAR="`ls | grep "main" | head -1`" && \
+	VAR="`ls -R | grep "main" | head -1`" && \
 	if [ $$VAR = "main.py" ]; then \
 		echo "Detected Python For 12/$(D)/$(Y)"; \
 		echo "Testing...\n"; \
