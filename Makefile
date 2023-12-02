@@ -45,7 +45,7 @@ test:
 		echo "\nTesting...\n"; \
 		npx jest; \
 	fi; \
-	echo "Finished Run Job! \n\n"
+	echo "Finished Test Job! \n\n"
 
 
 .PHONY: run-and-test
