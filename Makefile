@@ -17,7 +17,7 @@ run:
 		echo "Detected TypeScript For 12/$(D)/$(Y)"; \
 		npm i jest @types/jest ts-jest typescript -D; \
 		npm install ts-node -D; \
-		echo {\"esModuleInterop\":true} > tsconfig.json ;\
+		echo {\"compilerOptions\":{\"esModuleInterop\":true}} > tsconfig.json ;\
 		echo "\nRunning...\n"; \
 		npx ts-node main.ts; \
 	fi; \
@@ -41,11 +41,11 @@ test:
 	if [ $$VAR = "main.test.ts" ]; then \
 		echo "Detected TypeScript For 12/$(D)/$(Y)"; \
 		npm i jest @types/jest ts-jest typescript ts-node -D; \
-		echo {\"esModuleInterop\":true} > tsconfig.json ;\
+		echo {\"compilerOptions\":{\"esModuleInterop\":true}} > tsconfig.json ;\
 		echo "\nTesting...\n"; \
 		npx jest; \
 	fi; \
-	echo "Finished Run Job! \n\n"
+	echo "Finished Test Job! \n\n"
 
 
 .PHONY: run-and-test
