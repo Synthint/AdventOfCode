@@ -21,7 +21,7 @@ run:
 		echo "\nRunning...\n"; \
 		npx ts-node main.ts; \
 	fi; \
-	echo "Finished Run Job! \n\n"
+	echo "\nFinished Run Job! \n\n"
 	
 .PHONY: test
 test:
@@ -45,7 +45,7 @@ test:
 		echo "\nTesting...\n"; \
 		npx jest; \
 	fi; \
-	echo "Finished Test Job! \n\n"
+	echo "\nFinished Test Job! \n\n"
 
 
 .PHONY: run-and-test
@@ -53,7 +53,9 @@ run-and-test: run test
 	
 .PHONY: prepare
 prepare:
-	pip install pytest
+	pip install pytest && \
+	rustup install nightly && \
+	rustup default nightly
 
 .PHONY: clean
 clean: 
