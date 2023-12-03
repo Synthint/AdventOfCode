@@ -90,13 +90,27 @@ fn main() {
 mod tests {
     use super::*;
 
+    // Test the solution for part 1 works for the example input
     #[test]
-    fn test_solve_part_1() {
+    fn test_solve_part_1_example() {
         assert_eq!(solve_part_1("test_input.txt"), Ok(8));
     }
 
+    // Test the solution for part 2 works for the example input
     #[test]
-    fn test_solve_part_2() {
+    fn test_solve_part_2_example() {
         assert_eq!(solve_part_2("test_input.txt"), Ok(2286));
+    }
+
+    // Test the solution for part 1 works for the actual input
+    #[test]
+    fn test_solve_part_1_actual() {
+        assert_eq!(solve_part_1("input.txt"), Ok(2061));
+    }
+
+    // Test the solution for part 2 works for the actual input
+    #[test]
+    fn test_solve_part_2_actual() {
+        assert_eq!(solve_part_2("input.txt"), Ok(72596));
     }
 }
