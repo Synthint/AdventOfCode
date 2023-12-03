@@ -1,10 +1,33 @@
 from main import solve_part_1, solve_part_2
 import pytest
 
+PART_1_EXAMPLE_SOLUTION = 134
+PART_2_EXAMPLE_SOLUTION = 49
 
-@pytest.mark.parametrize("input_1, input_2, expected_1, expected_2",
-                          [("test_input.txt", "test_input.txt",
-                            134, 49)])
-def test_problem(input_1, input_2, expected_1, expected_2):
-    assert solve_part_1(input_1) == expected_1
-    assert solve_part_2(input_2) == expected_2
+PART_1_ACTUAL_SOLUTION = 55607
+PART_2_ACTUAL_SOLUTION = 55291
+
+
+  # Test the solution for part 1 works for the example input
+@pytest.mark.parametrize("input, actual",
+                          [("test_input.txt", PART_1_EXAMPLE_SOLUTION)])
+def test_solve_part_1_example(input,actual):
+    assert solve_part_1(input) == actual
+
+# Test the solution for part 2 works for the example input
+@pytest.mark.parametrize("input, actual",
+                          [("test_input.txt", PART_2_EXAMPLE_SOLUTION)])
+def test_solve_part_2_example(input,actual):
+    assert solve_part_2(input) == actual
+
+# Test the solution for part 1 works for the actual input
+@pytest.mark.parametrize("input, actual",
+                          [("input.txt", PART_1_ACTUAL_SOLUTION)])
+def test_solve_part_1_actual(input,actual):
+    assert solve_part_1(input) == actual
+
+# Test the solution for part 2 works for the actual input
+@pytest.mark.parametrize("input, actual",
+                          [("input.txt", PART_2_ACTUAL_SOLUTION)])
+def test_solve_part_2_actual(input,actual):
+    assert solve_part_2(input) == actual

@@ -15,9 +15,6 @@ run:
 	fi; \
 	if [ $$VAR = "main.test.ts" ]; then \
 		echo "Detected TypeScript For 12/$(D)/$(Y)"; \
-		npm i jest @types/jest ts-jest typescript -D; \
-		npm install ts-node -D; \
-		echo {\"compilerOptions\":{\"esModuleInterop\":true}} > tsconfig.json ;\
 		echo "\nRunning...\n"; \
 		npx ts-node main.ts; \
 	fi; \
@@ -40,8 +37,6 @@ test:
 	fi; \
 	if [ $$VAR = "main.test.ts" ]; then \
 		echo "Detected TypeScript For 12/$(D)/$(Y)"; \
-		npm i jest @types/jest ts-jest typescript ts-node -D; \
-		echo {\"compilerOptions\":{\"esModuleInterop\":true}} > tsconfig.json ;\
 		echo "\nTesting...\n"; \
 		npx jest; \
 	fi; \
@@ -62,3 +57,31 @@ clean:
 	find . -type d -name 'target' -prune -exec rm -rf {} \; && \
 	find . -type d -name '__pycache__' -prune -exec rm -rf {} \; && \
 	find . -type d -name '.pytest_cache' -prune -exec rm -rf {} \;
+
+
+.PHONY: gen-template
+gen-template:
+	@ mkdir -p ./${Y}/Day_${D} && \
+	if [ $(LANG) = "python" ]; then \
+		echo "Creating Python Project For 12/$(D)/$(Y)"; \
+		cp -r ./templates/$(LANG)/. ./$(Y)/Day_$(D)/ ; \
+	fi; \
+	if [ $(LANG) = "typescript" ]; then \
+		echo "Creating TypeScript Project For 12/$(D)/$(Y)"; \
+		cp -r ./templates/$(LANG)/. ./$(Y)/Day_$(D)/ ; \
+		cd $(Y)/Day_$(D) && \
+		npm i jest @types/jest ts-jest typescript ts-node -D; \
+		echo {\"compilerOptions\":{\"esModuleInterop\":true}} > tsconfig.json ;\
+		cat ../../templates/typescript/package.json > package.json ;\
+	fi; \
+	if [ $(LANG) = "rust" ]; then \
+		echo "Creating Rust Project For 12/$(D)/$(Y)"; \
+		cp -r ./templates/$(LANG)/. ./$(Y)/Day_$(D)/ ; \
+		echo "Creating Cargo.toml"; \
+		echo "[package]" > ./$(Y)/Day_$(D)/Cargo.toml ; \
+		echo "name = \"day_$(D)\"" >> ./$(Y)/Day_$(D)/Cargo.toml ; \
+		echo "version = \"0.1.0\"" >> ./$(Y)/Day_$(D)/Cargo.toml ; \
+		echo "edition = \"2021\"" >> ./$(Y)/Day_$(D)/Cargo.toml ; \
+		echo "[dependencies]" >> ./$(Y)/Day_$(D)/Cargo.toml ; \
+	fi; \
+	
