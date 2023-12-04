@@ -61,7 +61,7 @@ clean:
 
 .PHONY: gen-template
 gen-template:
-	@ mkdir -p ./${Y}/Day_${D} && \
+	@ mkdir -p ./${Y}/day_${D} && \
 	if [ $(LANG) = "python" ]; then \
 		echo "Creating Python Project For 12/$(D)/$(Y)"; \
 		cp -r ./templates/$(LANG)/. ./$(Y)/Day_$(D)/ ; \
