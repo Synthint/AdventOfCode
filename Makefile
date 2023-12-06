@@ -1,6 +1,7 @@
 .PHONY: run
 run:
-	@cd $(Y)/Day_$(D) && \
+	@cd $(Y)/day_$(D) && \
+	echo "$$PWD" ; \
 	VAR="`ls -R | grep "main" | head -1`" && \
 	echo "Found: $$VAR";\
 	if [ $$VAR = "main.py" ]; then \
@@ -22,13 +23,14 @@ run:
 	
 .PHONY: test
 test:
-	@cd $(Y)/Day_$(D) && \
+	@cd $(Y)/day_$(D) && \
+	echo "$$PWD" ; \
 	VAR="`ls -R | grep "main" | head -1`" && \
 	echo "Found: $$VAR";\
 	if [ $$VAR = "main.py" ]; then \
 		echo "Detected Python For 12/$(D)/$(Y)"; \
 		echo "Testing...\n"; \
-		pytest; \
+		pytest ./; \
 	fi; \
 	if [ $$VAR = "main.rs" ]; then \
 		echo "Detected Rust For 12/$(D)/$(Y)"; \
@@ -64,24 +66,24 @@ gen-template:
 	@ mkdir -p ./${Y}/day_${D} && \
 	if [ $(LANG) = "python" ]; then \
 		echo "Creating Python Project For 12/$(D)/$(Y)"; \
-		cp -r ./templates/$(LANG)/. ./$(Y)/Day_$(D)/ ; \
+		cp -r ./templates/$(LANG)/. ./$(Y)/day_$(D)/ ; \
 	fi; \
 	if [ $(LANG) = "typescript" ]; then \
 		echo "Creating TypeScript Project For 12/$(D)/$(Y)"; \
-		cp -r ./templates/$(LANG)/. ./$(Y)/Day_$(D)/ ; \
-		cd $(Y)/Day_$(D) && \
+		cp -r ./templates/$(LANG)/. ./$(Y)/day_$(D)/ ; \
+		cd $(Y)/day_$(D) && \
 		npm i jest @types/jest ts-jest typescript ts-node -D; \
 		echo {\"compilerOptions\":{\"esModuleInterop\":true}} > tsconfig.json ;\
 		cat ../../templates/typescript/package.json > package.json ;\
 	fi; \
 	if [ $(LANG) = "rust" ]; then \
 		echo "Creating Rust Project For 12/$(D)/$(Y)"; \
-		cp -r ./templates/$(LANG)/. ./$(Y)/Day_$(D)/ ; \
+		cp -r ./templates/$(LANG)/. ./$(Y)/day_$(D)/ ; \
 		echo "Creating Cargo.toml"; \
-		echo "[package]" > ./$(Y)/Day_$(D)/Cargo.toml ; \
-		echo "name = \"day_$(D)\"" >> ./$(Y)/Day_$(D)/Cargo.toml ; \
-		echo "version = \"0.1.0\"" >> ./$(Y)/Day_$(D)/Cargo.toml ; \
-		echo "edition = \"2021\"" >> ./$(Y)/Day_$(D)/Cargo.toml ; \
-		echo "[dependencies]" >> ./$(Y)/Day_$(D)/Cargo.toml ; \
+		echo "[package]" > ./$(Y)/day_$(D)/Cargo.toml ; \
+		echo "name = \"day_$(D)\"" >> ./$(Y)/day_$(D)/Cargo.toml ; \
+		echo "version = \"0.1.0\"" >> ./$(Y)/day_$(D)/Cargo.toml ; \
+		echo "edition = \"2021\"" >> ./$(Y)/day_$(D)/Cargo.toml ; \
+		echo "[dependencies]" >> ./$(Y)/day_$(D)/Cargo.toml ; \
 	fi; \
 	
