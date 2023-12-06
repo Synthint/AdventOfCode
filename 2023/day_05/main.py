@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from multiprocessing import Pool
 
 class Almanac_Range:
@@ -18,6 +19,15 @@ class Almanac_Range:
     
     def contains_value(self, input: int) -> bool:
        return (input in range(self.source,self.source+self.range_len+1))
+    
+    def reverse_convert_value(self, input: int) -> int:
+        conversion = input
+        if input in range(self.dest,self.dest+self.range_len+1):
+            conversion = (input - self.dest) + self.source
+        return conversion
+    
+    def reverse_contains_value(self, input: int) -> bool:
+       return (input in range(self.dest,self.dest+self.range_len+1))
     
     def print_out(self):
         print(f"Convert: {self.source} -> {self.dest} over {self.range_len}")
@@ -45,6 +55,13 @@ class Almanac_Conversion:
             if range.contains_value(input):
                 return range.convert_value(input)
         return input
+    
+    def reverse_convert_value(self,input: int) -> int:
+        for range in self.conversion_ranges:
+            if range.reverse_contains_value(input):
+                return range.reverse_convert_value(input)
+        return input
+
 
     def print_out(self):
         print(f"\n===== {self.title} =====\n")
@@ -114,7 +131,7 @@ def min_convert_seed_range(seeds_start:int, seeds_range:int, conversions: dict[s
             converted = conversions[mode].convert_value(converted)
         if converted < min_loc:
                 min_loc = converted
-    return min_loc 
+    return min_loc
 
 def solve_part_2(file):
     conversions : dict[str,Almanac_Conversion]= {"seed-to-soil map:" : Almanac_Conversion("seed-to-soil map:", []),
@@ -140,31 +157,50 @@ def solve_part_2(file):
                 index += 1
     
     
+    rev_conversions = OrderedDict(reversed(list(conversions.items())))
+    step = 1_000         # nums per process
+    start = 60_000_000  # min num to start at
     iter_map_thing = []
-    for key in seeds_list:
-        iter_map_thing.append((key,seeds_list[key],conversions))
+    for value in range(start,70_000_000,step):
+        iter_map_thing.append((value,value+step,seeds_list,rev_conversions))
     
     try:  
-        pool = Pool(12)
-        results = pool.starmap(min_convert_seed_range,iter_map_thing)
-        print(results)
-        return min(results)
+        pool = Pool(16)
+        results = pool.starmap(check_loc_for_seeds,iter_map_thing)
+        
+        res_grouped = []
+        for res in results:
+            res_grouped.extend(res)
+        #print(res_grouped)
+        return min(res_grouped)
     except:
         return -1
         
-    min_loc = 999999999999999999999999999
-    print(seeds_list)
-    for seed in seeds_list:
-        print(seed)
-        for offset in range(seeds_list[seed]):
-            converted = seed+offset
-            for mode in conversions:
-                converted = conversions[mode].convert_value(converted)
-            if converted < min_loc:
-                min_loc = converted
-    return min_loc
-        
+def full_convert_rev(seed: int, conversions: dict[str,Almanac_Conversion]):
+    converted = seed
+    for mode in conversions:
+        #str = f"Converting {converted} over {mode}"
+        converted = conversions[mode].reverse_convert_value(converted)
+        #print(str + f" -> {converted}")
+    return converted
 
+
+def check_loc_for_seeds(range_min, range_max ,seeds_list, conversions: dict[str,Almanac_Conversion]):
+    #print(f"Range Start: {range_min}")
+    contained = []
+    for location in range(range_min,range_max):
+        seed = full_convert_rev(location,conversions)
+        #print(f"Checking {i} -> {x}")
+        for key in seeds_list:
+            #print(f"Checking {i} -> {x} against {key} -> {key+seeds_list[key]}")
+            if seed in range(key,key+seeds_list[key]+1):
+                contained.append(location)
+                #print(f"-> {x} in range {key} -> {key+seeds_list[key]+1}")
+                break
+    return contained
+
+#70000000
+#69841803
 
 print("Part 1 Answer ->",solve_part_1("./input.txt"))
 print("Part 2 Answer ->",solve_part_2("./input.txt"))
