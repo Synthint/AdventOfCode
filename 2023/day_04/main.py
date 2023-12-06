@@ -46,5 +46,3 @@ def solve_part_2(file):
         
 
 
-print("Part 1 Answer ->",solve_part_1("./input.txt"))
-print("Part 2 Answer ->",solve_part_2("./input.txt"))

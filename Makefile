@@ -7,7 +7,7 @@ run:
 	if [ $$VAR = "main.py" ]; then \
 		echo "Detected Python For 12/$(D)/$(Y)"; \
 		echo "Running...\n"; \
-		python main.py; \
+		python runner.py; \
 	fi; \
 	if [ $$VAR = "main.rs" ]; then \
 		echo "Detected Rust For 12/$(D)/$(Y)"; \
@@ -30,7 +30,7 @@ test:
 	if [ $$VAR = "main.py" ]; then \
 		echo "Detected Python For 12/$(D)/$(Y)"; \
 		echo "Testing...\n"; \
-		pytest ./; \
+		pytest ./test_main.py; \
 	fi; \
 	if [ $$VAR = "main.rs" ]; then \
 		echo "Detected Rust For 12/$(D)/$(Y)"; \

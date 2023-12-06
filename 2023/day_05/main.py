@@ -202,5 +202,4 @@ def check_loc_for_seeds(range_min, range_max ,seeds_list, conversions: dict[str,
 #70000000
 #69841803
 
-print("Part 1 Answer ->",solve_part_1("./input.txt"))
-print("Part 2 Answer ->",solve_part_2("./input.txt",60_000_000,70_000_000))
+

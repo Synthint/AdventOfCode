@@ -101,6 +101,3 @@ def solve_part_2(file):
                 ret_sum = ret_sum + (int(possible_gears[key].split(" ")[0]) * int(possible_gears[key].split(" ")[1]))
         return ret_sum
 
-
-print("Part 1 Answer ->",solve_part_1("./input.txt"))
-print("Part 2 Answer ->",solve_part_2("./input.txt"))
