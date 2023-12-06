@@ -3,7 +3,6 @@ __pycache__
 target
 node_modules
 package-lock.json
-package.json
 tsconfig.json
 jest.config.js
 Cargo.lock
