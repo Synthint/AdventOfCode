@@ -19,6 +19,11 @@ run:
 		echo "\nRunning...\n"; \
 		npx ts-node main.ts; \
 	fi; \
+	if [ $$VAR = "main.go" ]; then \
+		echo "Detected Go For 12/$(D)/$(Y)"; \
+		echo "\nRunning...\n"; \
+		go run main.go; \
+	fi; \
 	echo "\nFinished Run Job! \n\n"
 	
 .PHONY: test
@@ -41,6 +46,11 @@ test:
 		echo "Detected TypeScript For 12/$(D)/$(Y)"; \
 		echo "\nTesting...\n"; \
 		npx jest; \
+	fi; \
+	if [ $$VAR = "main.go" ]; then \
+		echo "Detected Go For 12/$(D)/$(Y)"; \
+		echo "\nRunning...\n"; \
+		go test; \
 	fi; \
 	echo "\nFinished Test Job! \n\n"
 
@@ -85,5 +95,9 @@ gen-template:
 		echo "version = \"0.1.0\"" >> ./$(Y)/day_$(D)/Cargo.toml ; \
 		echo "edition = \"2021\"" >> ./$(Y)/day_$(D)/Cargo.toml ; \
 		echo "[dependencies]" >> ./$(Y)/day_$(D)/Cargo.toml ; \
+	fi; \
+	if [ $(LANG) = "go" ]; then \
+		echo "Creating Go Project For 12/$(D)/$(Y)"; \
+		cp -r ./templates/$(LANG)/. ./$(Y)/day_$(D)/ ; \
 	fi; \
 	
