@@ -37,22 +37,13 @@ def recur_count(record: str , nums):
 
 def solve_part_1(file):
     sum = 0
-    with open(file, "r") as input:
-        for line in input:
-            record = line.split(" ")[0]
-            nums = tuple([int(i) for i in line.split(" ")[1].split(",")])
-            sum += recur_count(record , nums)
+    sum = solve_general(file,1)
     return sum
         
 
 def solve_part_2(file):
     sum = 0
-    with open(file, "r") as input:
-        for line in input:
-            line = line.strip()
-            record = ((line.split(" ")[0]+"?") * 5)[:-1]
-            nums = tuple([int(i) for i in ((line.split(" ")[1]+",") * 5).split(",")[:-1]])
-            sum += recur_count(record , nums)
+    sum = solve_general(file,5)
     return sum
 
 
