@@ -2,7 +2,7 @@ from main import solve_part_1, solve_part_2
 import pytest
 
 PART_1_EXAMPLE_SOLUTION = 405
-PART_2_EXAMPLE_SOLUTION = None
+PART_2_EXAMPLE_SOLUTION = 400
 
   # Test the solution for part 1 works for the example input
 @pytest.mark.parametrize("input, actual",
