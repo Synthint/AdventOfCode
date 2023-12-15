@@ -62,7 +62,8 @@ run-and-test: run test
 prepare:
 	pip install pytest && \
 	rustup install nightly && \
-	rustup default nightly
+	rustup default nightly && \
+	git config --global --add safe.directory /workspaces/AdventOfCode
 
 .PHONY: clean
 clean: 
