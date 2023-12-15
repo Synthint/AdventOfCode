@@ -24,4 +24,4 @@ jobs:
       - name: prepare
         run: make prepare
       - name: do testing
-        run: make run-and-test Y=${{matrix.year}} D=${{matrix.day}}
+        run: make test Y=${{matrix.year}} D=${{matrix.day}}
