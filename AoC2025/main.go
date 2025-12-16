@@ -4,8 +4,8 @@ import (
 	day01 "AoC2025/Day_01"
 	day02 "AoC2025/Day_02"
 	day03 "AoC2025/Day_03"
+	day04 "AoC2025/Day_04"
 
-	// day04 "AoC2025/Day_04"
 	// day05 "AoC2025/Day_05"
 	// day06 "AoC2025/Day_06"
 	// day07 "AoC2025/Day_07"
@@ -27,7 +27,7 @@ var solvers = map[int]Solver{
 	1: day01.Solve,
 	2: day02.Solve,
 	3: day03.Solve,
-	// 4:  day04.Solve,
+	4: day04.Solve,
 	// 5:  day05.Solve,
 	// 6:  day06.Solve,
 	// 7:  day07.Solve,
