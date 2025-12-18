@@ -40,7 +40,11 @@ func TestSolutions(t *testing.T) {
 
 			input_slice := test_slice[2:]
 
-			part_one_solution, part_two_solution := solvers[day](input_slice)
+			arg := -1
+			if day == 8 {
+				arg = 10 // Day 8 requires a different number for different days :(
+			}
+			part_one_solution, part_two_solution := solvers[day](input_slice, arg)
 
 			day_result_str := "\u2705"
 			part_one_result_str := "\u2705"

@@ -96,7 +96,7 @@ func SolvePartTwo(file_slice []string) string {
 	return fmt.Sprintf("%d", walkTachyonStream(start, 0, calculated_stream, already_traveled))
 }
 
-func Solve(input []string) (string, string) {
+func Solve(input []string, arg int) (string, string) {
 	part_one_solution := SolvePartOne(input)
 	part_two_solution := SolvePartTwo(input)
 	return part_one_solution, part_two_solution

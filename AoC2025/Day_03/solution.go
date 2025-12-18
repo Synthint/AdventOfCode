@@ -62,7 +62,7 @@ func solveForNumDigits(file_slice []string, num_digits_wanted int) string {
 	return fmt.Sprintf("%d", grand_total)
 }
 
-func Solve(input []string) (string, string) {
+func Solve(input []string, arg int) (string, string) {
 	part_one_solution := SolvePartOne(input)
 	part_two_solution := SolvePartTwo(input)
 	return part_one_solution, part_two_solution
