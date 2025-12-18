@@ -16,7 +16,7 @@ func TestSolutions(t *testing.T) {
 		days = append(days, day)
 	}
 	sort.Ints(days)
-
+	fmt.Println(strings.Repeat("-", 69))
 	for _, day := range days {
 		day := day // capture loop variable
 
@@ -42,17 +42,36 @@ func TestSolutions(t *testing.T) {
 
 			part_one_solution, part_two_solution := solvers[day](input_slice)
 
+			day_result_str := "\u2705"
+			part_one_result_str := "\u2705"
+			if part_one_solution != part_one_expected {
+				part_one_result_str = "\u274C"
+				day_result_str = "\u274C"
+			}
+			part_two_result_str := "\u2705"
+			if part_two_solution != part_two_expected {
+				part_two_result_str = "\u274C"
+				day_result_str = "\u274C"
+			}
+
+			fmt.Printf("|%s %s %-2d | %s %-14s %s | %s %-15s %s |\n",
+				day_result_str, "Day", day,
+				"Part 1:", part_one_solution, part_one_result_str,
+				"Part 2:", part_two_solution, part_two_result_str)
+			fmt.Println(strings.Repeat("-", 69))
 			t.Run("First Problem", func(t *testing.T) {
 				if part_one_solution != part_one_expected {
-					t.Errorf("expected %q, got %q", part_one_expected, part_one_solution)
+					t.Errorf("Day %d Part 1 expected %q, got %q", day, part_one_expected, part_one_solution)
 				}
 			})
 
 			t.Run("Second Problem", func(t *testing.T) {
 				if part_two_solution != part_two_expected {
-					t.Errorf("expected %q, got %q", part_two_expected, part_two_solution)
+					t.Errorf("Day %d Part 2 expected %q, got %q", day, part_two_expected, part_two_solution)
 				}
 			})
 		})
+
 	}
+	fmt.Println("")
 }
