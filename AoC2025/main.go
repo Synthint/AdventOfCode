@@ -8,44 +8,40 @@ import (
 	day05 "AoC2025/Day_05"
 	day06 "AoC2025/Day_06"
 	day07 "AoC2025/Day_07"
+	day08 "AoC2025/Day_08"
+	day09 "AoC2025/Day_09"
+	day10 "AoC2025/Day_10"
+	day11 "AoC2025/Day_11"
+	day12 "AoC2025/Day_12"
+
 	"AoC2025/utils"
+	"bufio"
 	"flag"
+	"fmt"
+	"log"
 	"maps"
+	"os"
 	"slices"
 	"sort"
 	"strings"
-
-	day08 "AoC2025/Day_08"
-	day09 "AoC2025/Day_09"
-
-	// day10 "AoC2025/Day_10"
-
-	// day11 "AoC2025/Day_11"
-	// day12 "AoC2025/Day_12"
-
-	"bufio"
-	"fmt"
-	"log"
-	"os"
-	// "os"
 )
 
 type Solver func([]string, int) (string, string)
 
 // Solver array
 var solvers = map[int]Solver{
-	1: day01.Solve,
-	2: day02.Solve,
-	3: day03.Solve,
-	4: day04.Solve,
-	5: day05.Solve,
-	6: day06.Solve,
-	7: day07.Solve,
-	8: day08.Solve,
-	9: day09.Solve,
-	// 10: day10.Solve,
-	// 11: day11.Solve,
-	// 12: day12.Solve,
+	1:  day01.Solve,
+	2:  day02.Solve,
+	3:  day03.Solve,
+	4:  day04.Solve,
+	5:  day05.Solve,
+	6:  day06.Solve,
+	7:  day07.Solve,
+	8:  day08.Solve,
+	9:  day09.Solve,
+	10: day10.Solve,
+	11: day11.Solve,
+	12: day12.Solve,
 }
 
 func main() {

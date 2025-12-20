@@ -50,10 +50,15 @@ func TestSolutions(t *testing.T) {
 			part_one_result_str := "\u2705"
 			if part_one_solution != part_one_expected {
 				part_one_result_str = "\u274C"
-				day_result_str = "\u274C"
+				day_result_str = "\U0001F7E8"
 			}
 			part_two_result_str := "\u2705"
 			if part_two_solution != part_two_expected {
+				part_two_result_str = "\u274C"
+				day_result_str = "\U0001F7E8"
+			}
+
+			if part_two_solution != part_two_expected && part_one_solution != part_one_expected {
 				part_two_result_str = "\u274C"
 				day_result_str = "\u274C"
 			}
