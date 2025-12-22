@@ -106,7 +106,7 @@ func SolvePartOne(file_slice []string) string {
 	for _, sp := range spaces {
 		piece_count := sum(sp.present_quantity)
 		spacex3x3 := (sp.length / 3) * (sp.width / 2) // Works on the test and my input, highly doubt it works generally
-		fmt.Println(sp, " : ", spacex3x3)
+		// fmt.Println(sp, " : ", spacex3x3)
 		if piece_count < spacex3x3 {
 			count++
 		}
@@ -115,13 +115,13 @@ func SolvePartOne(file_slice []string) string {
 	// for x, sp := range spaces {
 	// 	fmt.Println(x, " -> ", sp)
 	// }
-	fmt.Println("Space Count: ", count)
+	// fmt.Println("Space Count: ", count)
 	return fmt.Sprintf("%d", count)
 
 }
 
 func SolvePartTwo(file_slice []string) string {
-	return fmt.Sprintf("%d", -1)
+	return "No Part 2"
 }
 
 func Solve(input []string, arg int) (string, string) {

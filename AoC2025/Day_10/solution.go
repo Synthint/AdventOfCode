@@ -3,12 +3,13 @@ package template
 import (
 	"AoC2025/utils"
 	"fmt"
-
-	// "math"
+	"maps"
+	"math"
 	"regexp"
 	"slices"
 	"strings"
-	// "github.com/lanl/clp"
+
+	"github.com/lanl/clp"
 )
 
 type machine struct {
@@ -129,58 +130,195 @@ func SolvePartOne(file_slice []string) string {
 
 }
 
-// func addButtonToJoltages(button []int, joltage []int) []int {
-// 	for _, x := range button {
-// 		if x > len(joltage) {
-// 			panic("No")
-// 		}
-// 		joltage[x]++
-// 	}
-// 	return joltage
-// }
+func DetermineCoefficients(mach machine) [][]int {
+	matrix := make([][]int, len(mach.joltage_reqs))
+	matrix_width := len(mach.buttons) + 1
 
-// func bKey(button []int) string {
-// 	return fmt.Sprint(button)
-// }
+	for x, req := range mach.joltage_reqs {
+		next_line := make([]int, matrix_width)
+		next_line[matrix_width-1] = req
+		for ind, button := range mach.buttons {
+			if slices.Contains(button, x) {
+				next_line[ind] = 1
+			}
+		}
+		matrix[x] = next_line
+	}
 
-// func fewestToGetJoltages(mach machine) int {
-// 	var memo map[string][]int
+	return matrix
+}
 
-// 	return 2
-// }
+func PackCLPMatrix(coeff_matrix [][]int) *clp.PackedMatrix { // My coeff matrix wasn't good enough I guess?
+	num_rows := len(coeff_matrix)
+	num_vars := len(coeff_matrix[0]) - 1
+
+	packed_matrix := clp.NewPackedMatrix()
+
+	for x := 0; x < num_vars; x++ {
+		column := []clp.Nonzero{}
+
+		for y := 0; y < num_rows; y++ {
+			coef := coeff_matrix[y][x]
+			if coef != 0 {
+				column = append(column, clp.Nonzero{
+					Index: y,
+					Value: float64(coef),
+				})
+			}
+		}
+
+		packed_matrix.AppendColumn(column)
+	}
+
+	return packed_matrix
+}
+
+func SolveCLP(coeff_matrix [][]int, extra_var_bounds map[int]clp.Bounds) ([]float64, float64, error) {
+
+	num_rows := len(coeff_matrix)
+	num_vars := len(coeff_matrix[0]) - 1
+
+	matrix := PackCLPMatrix(coeff_matrix)
+
+	var_bounds := make([]clp.Bounds, num_vars)
+	for index := 0; index < num_vars; index++ {
+		if bound, ok := extra_var_bounds[index]; ok {
+			var_bounds[index] = bound
+		} else {
+			var_bounds[index] = clp.Bounds{
+				Lower: 0,
+				Upper: math.Inf(1),
+			}
+		}
+	}
+
+	row_bounds := make([]clp.Bounds, num_rows)
+	for row_index := 0; row_index < num_rows; row_index++ {
+		joltage_answer := float64(coeff_matrix[row_index][num_vars])
+		row_bounds[row_index] = clp.Bounds{
+			Lower: joltage_answer,
+			Upper: joltage_answer,
+		}
+	}
+
+	objective := make([]float64, num_vars)
+	for i := range objective {
+		objective[i] = 1
+	}
+
+	lp := clp.NewSimplex()
+	lp.LoadProblem(matrix, var_bounds, objective, row_bounds, nil)
+	lp.SetOptimizationDirection(clp.Minimize)
+
+	if lp.Primal(clp.NoValuesPass, clp.NoStartFinishOptions) != clp.Optimal {
+		return nil, 0, fmt.Errorf("CLP err")
+		// Still gives an answer without this, and a lower answer too but that one is wrong ¯\_(ツ)_/¯
+	}
+
+	solution := lp.PrimalColumnSolution()
+	objective_value := lp.ObjectiveValue()
+
+	return solution, objective_value, nil
+}
+
+//
+
+func IsPracticallyAnInteger(num float64) bool {
+	return math.Abs(num-math.Round(num)) > 1e-6
+}
+
+func BranchAndBound(matrix [][]int, current_bounds map[int]clp.Bounds, best_solution *int) {
+	solution, lp_value, err := SolveCLP(matrix, current_bounds)
+	if err != nil {
+		return
+	}
+	if int(math.Ceil(lp_value)) >= *best_solution {
+		return
+	}
+
+	for var_index, value := range solution {
+		if IsPracticallyAnInteger(value) {
+			floor_val := math.Floor(value)
+			ceil_val := math.Ceil(value)
+
+			left_bounds := maps.Clone(current_bounds)
+			left_bounds[var_index] = clp.Bounds{
+				Lower: 0,
+				Upper: floor_val,
+			}
+			BranchAndBound(matrix, left_bounds, best_solution)
+
+			right_bounds := maps.Clone(current_bounds)
+			right_bounds[var_index] = clp.Bounds{
+				Lower: ceil_val,
+				Upper: math.Inf(1),
+			}
+			BranchAndBound(matrix, right_bounds, best_solution)
+
+			return
+		}
+	}
+
+	// All variables are integer — update best solution
+	sum := 0
+	for _, v := range solution {
+		sum += int(math.Round(v))
+	}
+
+	if sum < *best_solution {
+		*best_solution = sum
+	}
+
+}
+
+func SolveMatrix(coeff_matrix [][]int) (int, error) {
+	best_solution := math.MaxInt32
+
+	BranchAndBound(
+		coeff_matrix,
+		map[int]clp.Bounds{},
+		&best_solution,
+	)
+
+	if best_solution == math.MaxInt32 {
+		return 0, fmt.Errorf("no solution")
+	}
+
+	return best_solution, nil
+}
 
 func SolvePartTwo(file_slice []string) string {
-	// machines := parse_machine_input(file_slice)
+	machines := parse_machine_input(file_slice)
 	total := 0
 
-	// for _, machine := range machines {
-	// 	total += fewestToGetJoltages(machine)
-	// }
+	for _, mach := range machines {
+		fmt.Println("---")
+		coeffMatrix := DetermineCoefficients(mach)
+		value, _ := SolveMatrix(coeffMatrix)
+		total += value
+		fmt.Println(total)
+	}
 
 	return fmt.Sprintf("%d", total)
 }
 
 func Solve(input []string, arg int) (string, string) {
-	// Channels to receive solutions from goroutines
+
 	partOneChan := make(chan string)
 	partTwoChan := make(chan string)
 
-	// Start goroutine for SolvePartOne
 	go func() {
 		result := SolvePartOne(input)
-		partOneChan <- result // Send result to channel
+		partOneChan <- result
 	}()
 
-	// Start goroutine for SolvePartTwo
 	go func() {
 		result := SolvePartTwo(input)
-		partTwoChan <- result // Send result to channel
+		partTwoChan <- result
 	}()
 
-	// Wait for both results to be received from the channels
 	part_one_solution := <-partOneChan
 	part_two_solution := <-partTwoChan
 
-	// Return both solutions
 	return part_one_solution, part_two_solution
 }

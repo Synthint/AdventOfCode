@@ -13,6 +13,7 @@ import (
 	day10 "AoC2025/Day_10"
 	day11 "AoC2025/Day_11"
 	day12 "AoC2025/Day_12"
+	"time"
 
 	"AoC2025/utils"
 	"bufio"
@@ -45,6 +46,7 @@ var solvers = map[int]Solver{
 }
 
 func main() {
+	start := time.Now()
 	days := slices.Collect(maps.Keys(solvers))
 	sort.Slice(days, func(i, j int) bool {
 		return days[i] < days[j]
@@ -121,6 +123,8 @@ func main() {
 			"Part 2:", part_two_solution)
 		fmt.Println(strings.Repeat("-", 67))
 	}
+
+	fmt.Println("Solved Advent Of Code 2025 In:", time.Since(start))
 }
 
 func runDay(day int, input_file string) (string, string) {
