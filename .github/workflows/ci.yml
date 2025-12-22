@@ -2,7 +2,7 @@ name: GitHub Actions Demo
 run-name: ${{ github.actor }} is showing their holiday spirit 🎄!
 on: [push]
 jobs:
-  test:
+  test-2022-2023:
     strategy:
       matrix:
         year: ["AoC2022","AoC2023"]
@@ -25,3 +25,22 @@ jobs:
         run: make prepare
       - name: do testing
         run: make test Y=${{matrix.year}} D=${{matrix.day}}
+  test-2025:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.25.5'
+
+      - name: Install CLP 
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y coinor-libclp-dev pkg-config
+
+      - name: Go test 2025
+        run: |
+          cd AoC2025
+          go test
