@@ -292,11 +292,11 @@ func SolvePartTwo(file_slice []string) string {
 	total := 0
 
 	for _, mach := range machines {
-		fmt.Println("---")
+		// fmt.Println("---")
 		coeffMatrix := DetermineCoefficients(mach)
 		value, _ := SolveMatrix(coeffMatrix)
 		total += value
-		fmt.Println(total)
+		// fmt.Println(total)
 	}
 
 	return fmt.Sprintf("%d", total)
